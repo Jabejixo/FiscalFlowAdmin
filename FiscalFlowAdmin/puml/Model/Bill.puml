@@ -1,0 +1,12 @@
+@startuml
+class Bill <<sealed>> <<partial>> {
+    + IsMain : bool <<get>> <<set>>
+    + Balance : decimal <<get>> <<set>>
+    + IsDeleted : bool? <<get>> <<set>>
+    + ProfileId : long <<get>> <<set>>
+    + CurrencyId : long <<get>> <<set>>
+}
+Base <|-- Bill
+Bill o-> "Currency" Currency
+Bill o-> "Profile" Profile
+@enduml

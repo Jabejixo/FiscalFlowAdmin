@@ -1,0 +1,69 @@
+﻿<Page x:Class="FiscalFlowAdmin.View.Pages.AdminPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:vm="clr-namespace:FiscalFlowAdmin.ViewModel"
+      xmlns:local="clr-namespace:FiscalFlowAdmin.View.Pages"
+      xmlns:charts="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+      Title="Admin Page">
+
+    <Page.DataContext>
+        <vm:AdminPageViewModel/>
+    </Page.DataContext>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="2*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Мониторинг нагрузки на БД -->
+        <!-- Мониторинг нагрузки на БД -->
+        <GroupBox Header="Нагрузка на Базу Данных" Grid.Row="0" Grid.Column="0" Margin="10">
+            <StackPanel>
+                <TextBlock Text="{Binding DatabaseLoad}" FontSize="16"/>
+                <TextBlock Text="{Binding QueriesPerMinute}" FontSize="16"/>
+                <TextBlock Text="{Binding TransactionsPerMinute}" FontSize="16"/>
+                <TextBlock Text="{Binding TuplesInsertedPerMinute}" FontSize="16"/>
+                <TextBlock Text="{Binding TuplesUpdatedPerMinute}" FontSize="16"/>
+                <TextBlock Text="{Binding TuplesDeletedPerMinute}" FontSize="16"/>
+                <TextBlock Text="{Binding CacheHitRatio}" FontSize="16"/>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- Резервное копирование -->
+        <GroupBox Header="Резервное Копирование" Grid.Row="0" Grid.Column="1" Margin="10">
+            <StackPanel>
+                <Button Content="Сделать резервную копию" Command="{Binding BackupDatabaseCommand}" Margin="5"/>
+                <Button Content="Восстановить из копии" Command="{Binding RestoreDatabaseCommand}" Margin="5"/>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- Экспорт и импорт данных -->
+        <GroupBox Header="Экспорт/Импорт данных" Grid.Row="1" Grid.ColumnSpan="2" Margin="10">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Button Content="Экспорт в SQL" Command="{Binding ExportToSqlCommand}" Margin="5"/>
+                <Button Content="Экспорт в CSV" Command="{Binding ExportToCsvCommand}" Margin="5"/>
+                <Button Content="Импорт из SQL" Command="{Binding ImportFromSqlCommand}" Margin="5"/>
+                <Button Content="Импорт из CSV" Command="{Binding ImportFromCsvCommand}" Margin="5"/>
+            </StackPanel>
+        </GroupBox>
+
+        <!-- Статистики и диаграммы -->
+        <GroupBox Header="Статистики" Grid.Row="2" Grid.ColumnSpan="2" Margin="10">
+            <charts:CartesianChart Series="{Binding ChartSeries}" LegendLocation="Right">
+                <charts:CartesianChart.AxisX>
+                    <charts:Axis Title="Время" Labels="{Binding ChartLabels}"/>
+                </charts:CartesianChart.AxisX>
+                <charts:CartesianChart.AxisY>
+                    <charts:Axis Title="Значение"/>
+                </charts:CartesianChart.AxisY>
+            </charts:CartesianChart>
+        </GroupBox>
+
+    </Grid>
+</Page>

@@ -1,0 +1,7 @@
+@startuml
+class BlacklistedTokenRepository {
+}
+class "BaseRepository`1"<T> {
+}
+"BaseRepository`1" "<BlacklistedToken>" <|-- BlacklistedTokenRepository
+@enduml

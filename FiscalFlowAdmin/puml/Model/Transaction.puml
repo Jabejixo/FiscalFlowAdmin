@@ -1,0 +1,12 @@
+@startuml
+class Transaction <<sealed>> <<partial>> {
+    + IsDeleted : bool <<get>> <<set>>
+    + Amount : decimal <<get>> <<set>>
+    + BillId : long <<get>> <<set>>
+    + CategoryId : long <<get>> <<set>>
+}
+Base <|-- Transaction
+Transaction --> "Date" DateOnly
+Transaction o-> "Bill" Bill
+Transaction o-> "Category" TransactionCategory
+@enduml

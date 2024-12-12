@@ -1,0 +1,7 @@
+@startuml
+class BlankAttribute {
+    + AllowBlank : bool <<get>>
+    + BlankAttribute(allowBlank:bool)
+}
+Attribute <|-- BlankAttribute
+@enduml

@@ -1,0 +1,7 @@
+@startuml
+class OrderAttribute {
+    + Order : int <<get>>
+    + OrderAttribute(order:int)
+}
+Attribute <|-- OrderAttribute
+@enduml

@@ -1,0 +1,12 @@
+@startuml
+class FormField {
+    + PropertyName : string <<get>> <<set>>
+    + DisplayName : string <<get>> <<set>>
+    + Value : object <<get>> <<set>>
+    + Order : int <<get>> <<set>>
+}
+class "IEnumerable`1"<T> {
+}
+FormField --> "PropertyType" Type
+FormField --> "ValidationAttributes<ValidationAttribute>" "IEnumerable`1"
+@enduml

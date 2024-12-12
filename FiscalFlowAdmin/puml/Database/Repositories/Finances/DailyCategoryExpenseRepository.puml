@@ -1,0 +1,7 @@
+@startuml
+class DailyCategoryExpenseRepository {
+}
+class "BaseRepository`1"<T> {
+}
+"BaseRepository`1" "<DailyCategoryExpense>" <|-- DailyCategoryExpenseRepository
+@enduml

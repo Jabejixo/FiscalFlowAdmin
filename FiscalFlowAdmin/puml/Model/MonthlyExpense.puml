@@ -1,0 +1,11 @@
+@startuml
+class MonthlyExpense <<sealed>> <<partial>> {
+    + Amount : decimal <<get>> <<set>>
+    + IsDeleted : bool <<get>> <<set>>
+    + Period : string <<get>> <<set>>
+    + BillId : long <<get>> <<set>>
+}
+Base <|-- MonthlyExpense
+MonthlyExpense --> "NextPaymentDate" DateOnly
+MonthlyExpense o-> "Bill" Bill
+@enduml

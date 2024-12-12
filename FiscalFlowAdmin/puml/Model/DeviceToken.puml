@@ -1,0 +1,8 @@
+@startuml
+class DeviceToken <<sealed>> <<partial>> {
+    + Token : string <<get>> <<set>>
+    + ProfileId : long <<get>> <<set>>
+}
+Base <|-- DeviceToken
+DeviceToken o-> "Profile" Profile
+@enduml

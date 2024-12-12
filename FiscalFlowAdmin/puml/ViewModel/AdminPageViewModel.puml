@@ -1,0 +1,54 @@
+@startuml
+class AdminPageViewModel {
+    - <<readonly>> _connectionString : string
+    - _databaseLoad : string
+    + DatabaseLoad : string <<get>> <<set>>
+    - _queriesPerMinute : string
+    + QueriesPerMinute : string <<get>> <<set>>
+    - _transactionsPerMinute : string
+    + TransactionsPerMinute : string <<get>> <<set>>
+    - _tuplesInsertedPerMinute : string
+    + TuplesInsertedPerMinute : string <<get>> <<set>>
+    - _tuplesUpdatedPerMinute : string
+    + TuplesUpdatedPerMinute : string <<get>> <<set>>
+    - _tuplesDeletedPerMinute : string
+    + TuplesDeletedPerMinute : string <<get>> <<set>>
+    - _cacheHitRatio : string
+    + CacheHitRatio : string <<get>> <<set>>
+    - _prevXactCommit : long
+    - _prevXactRollback : long
+    - _prevTuplesInserted : long
+    - _prevTuplesUpdated : long
+    - _prevTuplesDeleted : long
+    - _prevBlksRead : long
+    - _prevBlksHit : long
+    + AdminPageViewModel()
+    - BackupDatabase(parameter:object) : void
+    - RestoreDatabase(parameter:object) : void
+    - ExportToSql(parameter:object) : void
+    - <<async>> ExportToCsv(parameter:object) : void
+    - ImportFromSql(parameter:object) : void
+    - <<async>> ImportFromCsv(parameter:object) : void
+    - <<async>> StartDatabaseMonitoringAsync(cancellationToken:CancellationToken) : void
+    - <<async>> InitializePreviousMetricsAsync() : Task
+    - <<async>> LoadDatabasePerformanceAsync() : Task
+    - LoadChartData() : void
+    - ConfigureLogging() : void
+    - _disposed : bool = false
+    + Dispose() : void
+    # <<virtual>> Dispose(disposing:bool) : void
+}
+ViewModelBase <|-- AdminPageViewModel
+IDisposable <|-- AdminPageViewModel
+AdminPageViewModel --> "_dataManager" DataManager
+AdminPageViewModel --> "BackupDatabaseCommand" ICommand
+AdminPageViewModel --> "RestoreDatabaseCommand" ICommand
+AdminPageViewModel --> "ExportToSqlCommand" ICommand
+AdminPageViewModel --> "ExportToCsvCommand" ICommand
+AdminPageViewModel --> "ImportFromSqlCommand" ICommand
+AdminPageViewModel --> "ImportFromCsvCommand" ICommand
+AdminPageViewModel --> "ChartSeries" SeriesCollection
+AdminPageViewModel --> "_prevTime" DateTime
+AdminPageViewModel --> "_cancellationTokenSource" CancellationTokenSource
+AdminPageViewModel o-> "_monitoringSemaphore" SemaphoreSlim
+@enduml

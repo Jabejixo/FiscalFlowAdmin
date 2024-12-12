@@ -1,0 +1,19 @@
+@startuml
+class "BaseRepository`1"<TEntity> {
+    - ValidateId(id:long) : void
+    + <<async>> GetByIdAsync(id:long, cancellationToken:CancellationToken) : Task<TEntity>
+    + <<async>> GetByIdWithRelatedDataAsync(id:long, cancellationToken:CancellationToken) : Task<TEntity?>
+    + <<async>> GetAllAsync(cancellationToken:CancellationToken) : Task<IEnumerable<TEntity>>
+    + <<async>> GetAllWithRelatedDataAsync(cancellationToken:CancellationToken) : Task<IEnumerable<TEntity>>
+    + <<async>> AddAsync(entity:TEntity?) : Task<bool>
+    + <<async>> UpdateAsync(entity:TEntity?) : Task<bool>
+    + <<async>> DeleteAsync(id:long) : Task<bool>
+    + GetQueryable() : IQueryable<TEntity>
+    + <<async>> PartialUpdateAsync(id:long, updateAction:Action<TEntity>) : Task<bool>
+}
+class "IRepository`1"<T> {
+}
+"IRepository`1" "<TEntity>" <|-- "BaseRepository`1"
+"BaseRepository`1" o-> "_context" FiscalFlowDatabaseContext
+"BaseRepository`1" o-> "_logger" ILogger
+@enduml

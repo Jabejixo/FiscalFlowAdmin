@@ -1,0 +1,15 @@
+@startuml
+class MainWindowViewModel {
+    - _email : string
+    + Email : string <<get>> <<set>>
+    - _password : string
+    + Password : string <<get>> <<set>>
+    - _isLogin : bool <<get>> <<set>> = false
+    +  <<event>> LoginAction : Action? 
+    - Login() : void
+}
+ViewModelBase <|-- MainWindowViewModel
+MainWindowViewModel o-> "_dataManager" DataManager
+MainWindowViewModel --> "_loginCommand" RelayCommand
+MainWindowViewModel --> "LoginCommand" RelayCommand
+@enduml

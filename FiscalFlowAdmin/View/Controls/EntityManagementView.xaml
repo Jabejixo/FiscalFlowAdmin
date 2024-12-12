@@ -1,0 +1,190 @@
+﻿<UserControl x:Class="FiscalFlowAdmin.View.Controls.EntityManagementView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:FiscalFlowAdmin.View.Controls"
+             xmlns:vm="clr-namespace:FiscalFlowAdmin.ViewModel"
+             xmlns:converter="clr-namespace:FiscalFlowAdmin.Converter"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:mdIcons="http://materialdesigninxaml.net/winfx/xaml/icons"
+             mc:Ignorable="d"
+             x:Name="EntityView"
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <!-- Шаблон для отображения ошибок валидации с сообщением об ошибке -->
+        <ControlTemplate x:Key="ValidationErrorTemplate">
+            <StackPanel>
+                <DockPanel LastChildFill="True">
+                    <TextBlock Foreground="Red" Text="*" VerticalAlignment="Center" Margin="0,0,5,0"/>
+                    <AdornedElementPlaceholder/>
+                </DockPanel>
+                <TextBlock Foreground="Red" FontSize="12" 
+                           Text="{Binding Path=AdornedElement.(Validation.Errors)[0].ErrorContent, 
+                                  RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=Adorner}}"
+                           Margin="25,0,0,0"/>
+            </StackPanel>
+        </ControlTemplate>
+
+        <!-- Конвертеры -->
+        <converter:NullableBoolToBoolConverter x:Key="NullableBoolToBoolConverter"/>
+        <converter:DateOnlyToDateTimeConverter x:Key="DateOnlyToDateTimeConverter"/>
+        <converter:CollectionToStringConverter x:Key="CollectionToStringConverter"/>
+
+        <!-- Стили для контролов с применением ValidationErrorTemplate и Material Design -->
+        <Style x:Key="TextBoxValidationStyle" TargetType="TextBox">
+            <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ValidationErrorTemplate}"/>
+            <Setter Property="Margin" Value="0,5,0,5"/>
+            <Setter Property="materialDesign:HintAssist.Hint" Value="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+            <Setter Property="materialDesign:TextFieldAssist.HasClearButton" Value="True"/>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={RelativeSource Self}, 
+                                            Path=(Validation.Errors)[0].ErrorContent}"/>
+                    <Setter Property="BorderBrush" Value="Red"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="ComboBoxValidationStyle" TargetType="ComboBox">
+            <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ValidationErrorTemplate}"/>
+            <Setter Property="Margin" Value="0,5,0,5"/>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={RelativeSource Self}, 
+                                            Path=(Validation.Errors)[0].ErrorContent}"/>
+                    <Setter Property="BorderBrush" Value="Red"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="DatePickerValidationStyle" TargetType="DatePicker">
+            <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ValidationErrorTemplate}"/>
+            <Setter Property="Margin" Value="0,5,0,5"/>
+            <Setter Property="materialDesign:HintAssist.Hint" Value="{Binding Tag, RelativeSource={RelativeSource Self}}"/>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={RelativeSource Self}, 
+                                            Path=(Validation.Errors)[0].ErrorContent}"/>
+                    <Setter Property="BorderBrush" Value="Red"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="CheckBoxValidationStyle" TargetType="CheckBox">
+            <Setter Property="Validation.ErrorTemplate" Value="{StaticResource ValidationErrorTemplate}"/>
+            <Setter Property="Margin" Value="0,5,0,5"/>
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="True">
+                    <Setter Property="ToolTip"
+                            Value="{Binding RelativeSource={RelativeSource Self}, 
+                                            Path=(Validation.Errors)[0].ErrorContent}"/>
+                    <Setter Property="BorderBrush" Value="Red"/>
+                    <Setter Property="BorderThickness" Value="1"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Панель управления (Поиск, Сортировка, Фильтрация) -->
+        <StackPanel Orientation="Horizontal" Margin="10" Grid.Row="0" Grid.ColumnSpan="2" 
+                    HorizontalAlignment="Stretch" VerticalAlignment="Top" >
+            <!-- Поиск -->
+            <TextBox Width="200" 
+                     Text="{Binding SearchQuery, UpdateSourceTrigger=PropertyChanged}" 
+                     Margin="0,0,10,0" 
+                     Style="{StaticResource TextBoxValidationStyle}"
+                     Tag="Поиск..." />
+            <Button Command="{Binding ClearSearchCommand}" 
+                    Margin="0,0,10,0" >
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="Refresh" Width="16" Height="16" Margin="0,0,5,0"/>
+                    <TextBlock Text="Очистить поиск" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+
+            <!-- Сортировка -->
+            <TextBlock Text="Сортировать по:" 
+                       VerticalAlignment="Center" 
+                       Margin="0,0,5,0" 
+                       TextWrapping="Wrap"/>
+            <ComboBox ItemsSource="{Binding SortableProperties}" 
+                      SelectedItem="{Binding SortColumn}" 
+                      Width="150" 
+                      Margin="0,0,10,0"
+                      Style="{StaticResource ComboBoxValidationStyle}"/>
+            <CheckBox Content="По возрастанию" 
+                      IsChecked="{Binding SortAscending}" 
+                      VerticalAlignment="Center" 
+                      Margin="0,0,10,0"
+                      Style="{StaticResource CheckBoxValidationStyle}"/>
+
+            <!-- Фильтрация -->
+            <TextBlock Text="Фильтр:" 
+                       VerticalAlignment="Center" 
+                       Margin="0,0,5,0" 
+                       TextWrapping="Wrap"/>
+            <ComboBox ItemsSource="{Binding FilterableProperties}" 
+                      SelectedItem="{Binding SelectedFilterProperty}" 
+                      Width="150" 
+                      Margin="0,0,5,0"
+                      Style="{StaticResource ComboBoxValidationStyle}"/>
+            <TextBox Width="150" 
+                     Text="{Binding FilterValue, UpdateSourceTrigger=PropertyChanged}" 
+                     Margin="0,0,5,0" 
+                     Style="{StaticResource TextBoxValidationStyle}"
+                     Tag="Значение для фильтрации" />
+            <Button Command="{Binding ApplyFilterCommand}" 
+                    Margin="0,0,5,0" >
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="Filter" Width="16" Height="16" Margin="0,0,5,0"/>
+                    <TextBlock Text="Применить фильтр" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+            <Button Command="{Binding ClearFilterCommand}">
+                <StackPanel Orientation="Horizontal">
+                    <materialDesign:PackIcon Kind="FilterRemove" Width="16" Height="16" Margin="0,0,5,0"/>
+                    <TextBlock Text="Сбросить фильтр" VerticalAlignment="Center"/>
+                </StackPanel>
+            </Button>
+        </StackPanel>
+
+        <!-- DataGrid для отображения сущностей -->
+        <DataGrid x:Name="DataGrid" Grid.Row="1" Grid.Column="0"
+                  ItemsSource="{Binding FilteredItems}"
+                  SelectedItem="{Binding SelectedItem, Mode=TwoWay}"
+                  AutoGenerateColumns="False"
+                  CanUserAddRows="False"
+                  IsReadOnly="True"
+                  EnableRowVirtualization="True"
+                  EnableColumnVirtualization="True"
+                  Margin="10"
+                  HorizontalAlignment="Stretch"
+                  VerticalAlignment="Stretch">
+            <!-- Колонки будут генерироваться динамически в коде -->
+        </DataGrid>
+
+        <!-- Форма для редактирования/создания сущности -->
+        <ScrollViewer Grid.Row="1" Grid.Column="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel x:Name="FormStackPanel" Margin="10" Opacity="0">
+                <!-- Поля формы будут генерироваться динамически в коде -->
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</UserControl>

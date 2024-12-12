@@ -1,0 +1,7 @@
+@startuml
+class DisplayMemberPathAttribute {
+    + PropertyName : string <<get>>
+    + DisplayMemberPathAttribute(propertyName:string)
+}
+Attribute <|-- DisplayMemberPathAttribute
+@enduml

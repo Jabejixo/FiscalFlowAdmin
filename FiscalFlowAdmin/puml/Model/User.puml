@@ -1,0 +1,15 @@
+@startuml
+class User <<sealed>> <<partial>> {
+    + Password : string <<get>> <<set>>
+    + IsSuperuser : bool <<get>> <<set>>
+    + Email : string <<get>> <<set>>
+    + FirstName : string? <<get>> <<set>>
+    + LastName : string? <<get>> <<set>>
+    + IsActive : bool <<get>> <<set>>
+    + IsConfirmedEmail : bool? <<get>> <<set>>
+    + IsStaff : bool <<get>> <<set>>
+}
+Base <|-- User
+User --> "LastLogin" DateTime
+User --> "Birthday" DateOnly
+@enduml

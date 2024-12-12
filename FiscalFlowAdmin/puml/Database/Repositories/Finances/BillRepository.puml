@@ -1,0 +1,7 @@
+@startuml
+class BillRepository {
+}
+class "BaseRepository`1"<T> {
+}
+"BaseRepository`1" "<Bill>" <|-- BillRepository
+@enduml

@@ -1,0 +1,39 @@
+﻿<Window x:Class="FiscalFlowAdmin.View.Windows.AdminWindow"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:local="clr-namespace:FiscalFlowAdmin.View.Windows"
+                      xmlns:mah="http://metro.mahapps.com/winfx/xaml/controls"
+                      mc:Ignorable="d"
+                      Title="AdminWindow" Height="700" Width="1400">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="200"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Боковая панель с кнопками -->
+        <StackPanel Grid.Column="0">
+            <Button Content="Пользователи" Click="UserButton_Click" Margin="5"/>
+            <Button Content="Профили" Click="ProfileButton_Click"  Margin="5"/>
+            <Button Content="Валюты" Click="CurrencyButton_Click"  Margin="5"/>
+            <Button Content="Счета" Click="BillButton_Click"  Margin="5"/>
+            <Button Content="Кредиты" Click="CreditButton_Click"  Margin="5"/>
+            <Button Content="Ежедневные категории трат" Click="DailyCategoryExpenseButton_Click"  Margin="5"/>
+            <Button Content="Ежедневные отчеты" Click="DailyReportButton_Click"  Margin="5"/>
+            <Button Content="Долги" Click="DebtButton_Click"  Margin="5"/>
+            <Button Content="Регулярные траты" Click="MonthlyExpenseButton_Click"  Margin="5"/>
+            <Button Content="Уведомления" Click="NotificationButton_Click"  Margin="5"/>
+            <Button Content="Категории транзакций" Click="TransactionCategoryButton_Click"  Margin="5"/>
+            <Button Content="Транзакции" Click="TransactionButton_Click"  Margin="5"/>
+            <Button Content="Логи" Click="LogPage_ButtonClick"  Margin="5"/>
+            <Button Content="Администрирование" Click="AdminPage_ButtonClick"  Margin="5"/>
+
+            <!-- Добавьте кнопки для других сущностей -->
+        </StackPanel>
+
+        <!-- Область содержимого -->
+        <Frame x:Name="EntityManagementFrame" Grid.Column="1" NavigationUIVisibility="Hidden"/>
+    </Grid>
+</Window>

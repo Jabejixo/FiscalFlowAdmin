@@ -1,0 +1,8 @@
+@startuml
+class TransactionCategory <<sealed>> <<partial>> {
+    + Name : string <<get>> <<set>>
+    + IsDeleted : bool <<get>> <<set>>
+    + IsIncome : bool <<get>> <<set>> = false
+}
+Base <|-- TransactionCategory
+@enduml

@@ -1,0 +1,20 @@
+@startuml
+class AdminWindow <<partial>> {
+    + AdminWindow()
+    - UserButton_Click(sender:object, e:RoutedEventArgs) : void
+    - ProfileButton_Click(sender:object, e:RoutedEventArgs) : void
+    - CurrencyButton_Click(sender:object, e:RoutedEventArgs) : void
+    - BillButton_Click(sender:object, e:RoutedEventArgs) : void
+    - CreditButton_Click(sender:object, e:RoutedEventArgs) : void
+    - DailyCategoryExpenseButton_Click(sender:object, e:RoutedEventArgs) : void
+    - DailyReportButton_Click(sender:object, e:RoutedEventArgs) : void
+    - DebtButton_Click(sender:object, e:RoutedEventArgs) : void
+    - MonthlyExpenseButton_Click(sender:object, e:RoutedEventArgs) : void
+    - NotificationButton_Click(sender:object, e:RoutedEventArgs) : void
+    - TransactionButton_Click(sender:object, e:RoutedEventArgs) : void
+    - AdminPage_ButtonClick(sender:object, e:RoutedEventArgs) : void
+    - TransactionCategoryButton_Click(sender:object, e:RoutedEventArgs) : void
+}
+Window <|-- AdminWindow
+AdminWindow --> "_dataManager" DataManager
+@enduml

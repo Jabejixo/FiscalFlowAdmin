@@ -1,0 +1,5 @@
+@startuml
+class FormIgnoreAttribute {
+}
+Attribute <|-- FormIgnoreAttribute
+@enduml

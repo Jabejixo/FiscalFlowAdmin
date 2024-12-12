@@ -1,0 +1,7 @@
+@startuml
+class OutstandingTokenRepository {
+}
+class "BaseRepository`1"<T> {
+}
+"BaseRepository`1" "<OutstandingToken>" <|-- OutstandingTokenRepository
+@enduml

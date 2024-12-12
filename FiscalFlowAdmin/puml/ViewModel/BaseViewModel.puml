@@ -1,0 +1,64 @@
+@startuml
+class "BaseViewModel`1"<T> <<sealed>> {
+    - _items : ObservableCollection<T>?
+    - _filteredItems : ObservableCollection<T>?
+    - _currentItemId : long = 0
+    - _selectedItem : T?
+    - _currentItem : T?
+    - OnCurrentItemPropertyChanged(sender:object?, e:PropertyChangedEventArgs) : void
+    - OnCurrentItemErrorsChanged(sender:object?, e:DataErrorsChangedEventArgs) : void
+    - _searchQuery : string
+    + SearchQuery : string <<get>> <<set>>
+    - _sortColumn : string
+    + SortColumn : string <<get>> <<set>>
+    - _sortAscending : bool = true
+    + SortAscending : bool <<get>> <<set>>
+    - _selectedFilterProperty : string
+    + SelectedFilterProperty : string <<get>> <<set>>
+    - _filterValue : string
+    + FilterValue : string <<get>> <<set>>
+    + BaseViewModel(repository:IRepository<T>)
+    - GenerateFormFields() : void
+    - <<async>> LoadDataAsync() : Task
+    - <<async>> CreateAsync() : Task
+    - CanCreate() : bool
+    - <<async>> UpdateAsync() : Task
+    - CanUpdate() : bool
+    - <<async>> DeleteAsync() : Task
+    - CanDelete() : bool
+    - GetSortableProperties() : List<string>
+    - GetFilterableProperties() : List<string>
+    - ApplyFilteringSortingSearching() : void
+    - ClearSearch() : void
+    - ClearFilter() : void
+    - CanApplyFilter() : bool
+    - ApplyFilter() : void
+    - CopyItem(source:T?, copyId:bool) : T?
+    - RaiseCommandCanExecuteChanged() : void
+}
+class "IRepository`1"<T> {
+}
+class "ObservableCollection`1"<T> {
+}
+class "Dictionary`2"<T1,T2> {
+}
+class "List`1"<T> {
+}
+ViewModelBase <|-- "BaseViewModel`1"
+INotifyPropertyChanged <|-- "BaseViewModel`1"
+"BaseViewModel`1" --> "Repository<T>" "IRepository`1"
+"BaseViewModel`1" --> "Items<T>" "ObservableCollection`1"
+"BaseViewModel`1" --> "FilteredItems<T>" "ObservableCollection`1"
+"BaseViewModel`1" --> "SelectedItem" T
+"BaseViewModel`1" --> "CurrentItem" T
+"BaseViewModel`1" --> "CreateCommand" ICommand
+"BaseViewModel`1" --> "UpdateCommand" ICommand
+"BaseViewModel`1" --> "DeleteCommand" ICommand
+"BaseViewModel`1" --> "ClearSearchCommand" ICommand
+"BaseViewModel`1" --> "ApplyFilterCommand" ICommand
+"BaseViewModel`1" --> "ClearFilterCommand" ICommand
+"BaseViewModel`1" --> "FormFields<FormField>" "ObservableCollection`1"
+"BaseViewModel`1" o-> "FilterCriteria<string,string>" "Dictionary`2"
+"BaseViewModel`1" --> "SortableProperties<string>" "List`1"
+"BaseViewModel`1" --> "FilterableProperties<string>" "List`1"
+@enduml

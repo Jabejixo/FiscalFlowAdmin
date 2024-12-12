@@ -1,0 +1,13 @@
+@startuml
+class Credit <<sealed>> <<partial>> {
+    + Amount : decimal <<get>> <<set>>
+    + Term : int <<get>> <<set>>
+    + InterestRate : decimal <<get>> <<set>>
+    + PaidAmount : decimal <<get>> <<set>>
+    + RemainingAmount : decimal <<get>> <<set>>
+    + IsDeleted : bool <<get>> <<set>>
+    + BillId : long <<get>> <<set>>
+}
+Base <|-- Credit
+Credit o-> "Bill" Bill
+@enduml

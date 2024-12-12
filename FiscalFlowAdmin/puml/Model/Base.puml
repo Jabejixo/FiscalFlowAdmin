@@ -1,0 +1,18 @@
+@startuml
+abstract class Base {
+    + <<virtual>> Id : long <<get>> <<set>>
+    + HasErrors : bool <<get>>
+    +  <<event>> ErrorsChanged : EventHandler<DataErrorsChangedEventArgs>? 
+    + GetErrors(propertyName:string?) : IEnumerable
+    + ValidateProperty(propertyName:string, value:object?) : void
+    + ValidateAllProperties() : void
+    # <<virtual>> OnErrorsChanged(propertyName:string) : void
+    +  <<event>> PropertyChanged : PropertyChangedEventHandler? 
+    # OnPropertyChanged(propertyName:string) : void
+}
+class "ConcurrentDictionary`2"<T1,T2> {
+}
+INotifyPropertyChanged <|-- Base
+INotifyDataErrorInfo <|-- Base
+Base o-> "_errors<string,List<string>>" "ConcurrentDictionary`2"
+@enduml

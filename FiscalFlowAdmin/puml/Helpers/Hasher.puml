@@ -1,0 +1,9 @@
+@startuml
+class Hasher <<static>> {
+    + {static} SetPassword(plainPassword:string) : string
+    + {static} HashPassword(password:string, salt:string, iterations:int) : string
+    + {static} VerifyPassword(password:string, hashedPasswordFromDb:string) : bool
+    + {static} ExtractSaltFromHash(passwordHash:string) : string
+    + {static} ExtractHashedPasswordFromHash(passwordHash:string) : string
+}
+@enduml

@@ -1,0 +1,8 @@
+@startuml
+class Notification <<sealed>> <<partial>> {
+    + Subject : string <<get>> <<set>>
+    + Description : string? <<get>> <<set>>
+}
+Base <|-- Notification
+Notification --> "SendTime" TimeOnly
+@enduml

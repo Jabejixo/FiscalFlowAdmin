@@ -1,0 +1,14 @@
+@startuml
+class DailyReport <<sealed>> <<partial>> {
+    + TotalIncome : decimal <<get>> <<set>>
+    + TotalExpense : decimal <<get>> <<set>>
+    + IsDeleted : bool <<get>> <<set>>
+    + ProfileId : long <<get>> <<set>>
+}
+class "ICollection`1"<T> {
+}
+Base <|-- DailyReport
+DailyReport --> "Date" DateOnly
+DailyReport o-> "FinancesAppDailycategoryexpenses<DailyCategoryExpense>" "ICollection`1"
+DailyReport o-> "Profile" Profile
+@enduml

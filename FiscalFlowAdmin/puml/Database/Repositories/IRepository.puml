@@ -1,0 +1,13 @@
+@startuml
+interface "IRepository`1"<TEntity> {
+    GetByIdAsync(id:long, cancellationToken:CancellationToken) : Task<TEntity>
+    GetByIdWithRelatedDataAsync(id:long, cancellationToken:CancellationToken) : Task<TEntity?>
+    GetAllAsync(cancellationToken:CancellationToken) : Task<IEnumerable<TEntity>>
+    GetAllWithRelatedDataAsync(cancellationToken:CancellationToken) : Task<IEnumerable<TEntity>>
+    AddAsync(entity:TEntity?) : Task<bool>
+    UpdateAsync(entity:TEntity?) : Task<bool>
+    DeleteAsync(id:long) : Task<bool>
+    GetQueryable() : IQueryable<TEntity>
+    PartialUpdateAsync(id:long, updateAction:Action<TEntity>) : Task<bool>
+}
+@enduml

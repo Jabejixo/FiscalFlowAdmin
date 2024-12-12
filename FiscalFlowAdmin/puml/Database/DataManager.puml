@@ -1,0 +1,27 @@
+@startuml
+class DataManager {
+    + DataManager()
+    + Save() : void
+    + Dispose() : void
+}
+class "IRepository`1"<T> {
+}
+IDisposable <|-- DataManager
+DataManager --> "_context" FiscalFlowDatabaseContext
+DataManager --> "DeviceTokens<DeviceToken>" "IRepository`1"
+DataManager --> "Users<User>" "IRepository`1"
+DataManager --> "Profiles<Profile>" "IRepository`1"
+DataManager --> "Bills<Bill>" "IRepository`1"
+DataManager --> "Credits<Credit>" "IRepository`1"
+DataManager --> "Currencies<Currency>" "IRepository`1"
+DataManager --> "DailyCategoryExpenses<DailyCategoryExpense>" "IRepository`1"
+DataManager --> "DailyReports<DailyReport>" "IRepository`1"
+DataManager --> "Debts<Debt>" "IRepository`1"
+DataManager --> "MonthlyExpenses<MonthlyExpense>" "IRepository`1"
+DataManager --> "TransactionCategories<TransactionCategory>" "IRepository`1"
+DataManager --> "Transactions<Transaction>" "IRepository`1"
+DataManager --> "Notifications<Notification>" "IRepository`1"
+DataManager --> "NotificationProfiles<NotificationProfile>" "IRepository`1"
+DataManager --> "BlacklistedTokens<BlacklistedToken>" "IRepository`1"
+DataManager --> "OutstandingTokens<OutstandingToken>" "IRepository`1"
+@enduml

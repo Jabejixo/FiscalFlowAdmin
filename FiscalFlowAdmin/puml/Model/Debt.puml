@@ -1,0 +1,11 @@
+@startuml
+class Debt <<sealed>> <<partial>> {
+    + Amount : decimal <<get>> <<set>>
+    + Debtor : string <<get>> <<set>>
+    + Description : string <<get>> <<set>>
+    + IsDeleted : bool <<get>> <<set>>
+    + BillId : long <<get>> <<set>>
+}
+Base <|-- Debt
+Debt o-> "Bill" Bill
+@enduml

@@ -1,0 +1,26 @@
+@startuml
+class FiscalFlowDatabaseContext <<partial>> {
+    + FiscalFlowDatabaseContext()
+    + FiscalFlowDatabaseContext(options:DbContextOptions<FiscalFlowDatabaseContext>)
+    # <<override>> OnConfiguring(optionsBuilder:DbContextOptionsBuilder) : void
+}
+class "DbSet`1"<T> {
+}
+DbContext <|-- FiscalFlowDatabaseContext
+FiscalFlowDatabaseContext --> "AuthenticationDevicetokens<DeviceToken>" "DbSet`1"
+FiscalFlowDatabaseContext --> "AuthenticationProfiles<Profile>" "DbSet`1"
+FiscalFlowDatabaseContext --> "AuthenticationUsers<User>" "DbSet`1"
+FiscalFlowDatabaseContext --> "FinancesAppBills<Bill>" "DbSet`1"
+FiscalFlowDatabaseContext --> "FinancesAppCredits<Credit>" "DbSet`1"
+FiscalFlowDatabaseContext --> "FinancesAppCurrencies<Currency>" "DbSet`1"
+FiscalFlowDatabaseContext --> "FinancesAppDailycategoryexpenses<DailyCategoryExpense>" "DbSet`1"
+FiscalFlowDatabaseContext --> "FinancesAppDailyreports<DailyReport>" "DbSet`1"
+FiscalFlowDatabaseContext --> "FinancesAppDebts<Debt>" "DbSet`1"
+FiscalFlowDatabaseContext --> "FinancesAppMonthlyexpenses<MonthlyExpense>" "DbSet`1"
+FiscalFlowDatabaseContext --> "FinancesAppTransactions<Transaction>" "DbSet`1"
+FiscalFlowDatabaseContext --> "FinancesAppTransactioncategories<TransactionCategory>" "DbSet`1"
+FiscalFlowDatabaseContext --> "RemindersNotifications<Notification>" "DbSet`1"
+FiscalFlowDatabaseContext --> "RemindersNotificationProfiles<NotificationProfile>" "DbSet`1"
+FiscalFlowDatabaseContext --> "TokenBlacklistBlacklistedtokens<BlacklistedToken>" "DbSet`1"
+FiscalFlowDatabaseContext --> "TokenBlacklistOutstandingtokens<OutstandingToken>" "DbSet`1"
+@enduml

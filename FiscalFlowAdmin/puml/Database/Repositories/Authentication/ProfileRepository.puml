@@ -1,0 +1,7 @@
+@startuml
+class ProfileRepository {
+}
+class "BaseRepository`1"<T> {
+}
+"BaseRepository`1" "<Profile>" <|-- ProfileRepository
+@enduml

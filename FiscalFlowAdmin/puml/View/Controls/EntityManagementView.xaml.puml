@@ -1,0 +1,23 @@
+@startuml
+class EntityManagementView <<partial>> {
+    + EntityManagementView()
+    - <<async>> EntityManagementView_Loaded(sender:object, e:RoutedEventArgs) : void
+    - EntityManagementView_Unloaded(sender:object, e:RoutedEventArgs) : void
+    - <<async>> ViewModel_PropertyChanged(sender:object, e:PropertyChangedEventArgs) : void
+    - <<async>> GenerateFormFields(formFields:IEnumerable<FormField>, modelType:Type, viewModelType:Type) : Task
+    - <<async>> CreateComboBoxAsync(propertyInfo:PropertyInfo, formField:FormField, foreignKeyAttribute:ForeignKeyAttribute) : Task<Control>
+    - CreateStringControl(propertyInfo:PropertyInfo, formField:FormField) : Control
+    - CreateNumericControl(propertyInfo:PropertyInfo, formField:FormField) : Control
+    - CreateCheckBox(propertyInfo:PropertyInfo, formField:FormField) : Control
+    - CreateDateControl(propertyInfo:PropertyInfo, formField:FormField) : Control
+    - IsNumericType(type:Type) : bool
+    - IsDateType(type:Type) : bool
+    - AddActionButtons() : void
+    - AddButtonHoverAnimation(button:Button) : void
+    - GenerateDataGridColumns(dataGrid:DataGrid, viewModel:object, modelType:Type, viewModelType:Type) : void
+    - GetCurrentItem() : Base?
+    - AnimateFormAppearance() : void
+}
+UserControl <|-- EntityManagementView
+EntityManagementView --> "_dataManager" DataManager
+@enduml

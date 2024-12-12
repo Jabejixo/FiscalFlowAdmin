@@ -1,0 +1,8 @@
+@startuml
+class BlacklistedToken <<sealed>> <<partial>> {
+    + TokenId : long <<get>> <<set>>
+}
+Base <|-- BlacklistedToken
+BlacklistedToken --> "BlacklistedAt" DateTime
+BlacklistedToken o-> "OutstandingToken" OutstandingToken
+@enduml

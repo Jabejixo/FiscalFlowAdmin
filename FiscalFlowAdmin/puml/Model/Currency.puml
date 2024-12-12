@@ -1,0 +1,8 @@
+@startuml
+class Currency <<sealed>> <<partial>> {
+    + Name : string <<get>> <<set>>
+    + Value : decimal <<get>> <<set>>
+    + IsDeleted : bool <<get>> <<set>>
+}
+Base <|-- Currency
+@enduml

@@ -1,0 +1,7 @@
+@startuml
+class NullableAttribute {
+    + AllowNull : bool <<get>>
+    + NullableAttribute(allowNull:bool)
+}
+Attribute <|-- NullableAttribute
+@enduml

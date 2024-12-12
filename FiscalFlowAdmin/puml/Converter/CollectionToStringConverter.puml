@@ -1,0 +1,8 @@
+@startuml
+class CollectionToStringConverter {
+    + DisplayMember : string <<get>> <<set>> = "Id"
+    + Convert(value:object?, targetType:Type, parameter:object?, culture:CultureInfo) : object
+    + ConvertBack(value:object?, targetType:Type, parameter:object?, culture:CultureInfo) : object?
+}
+IValueConverter <|-- CollectionToStringConverter
+@enduml

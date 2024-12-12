@@ -1,0 +1,7 @@
+@startuml
+class TooltipAttribute {
+    + Text : string <<get>>
+    + TooltipAttribute(text:string)
+}
+Attribute <|-- TooltipAttribute
+@enduml

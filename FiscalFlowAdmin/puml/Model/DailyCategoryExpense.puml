@@ -1,0 +1,10 @@
+@startuml
+class DailyCategoryExpense <<sealed>> <<partial>> {
+    + ExpenseAmount : decimal <<get>> <<set>>
+    + DailyReportId : long <<get>> <<set>>
+    + CategoryId : long <<get>> <<set>>
+}
+Base <|-- DailyCategoryExpense
+DailyCategoryExpense o-> "Category" TransactionCategory
+DailyCategoryExpense o-> "DailyReport" DailyReport
+@enduml

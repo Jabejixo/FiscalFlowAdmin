@@ -1,0 +1,7 @@
+@startuml
+class CollectionAttribute {
+    + DisplayMember : string <<get>>
+    + CollectionAttribute(displayMember:string)
+}
+Attribute <|-- CollectionAttribute
+@enduml

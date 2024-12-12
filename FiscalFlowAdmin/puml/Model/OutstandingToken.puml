@@ -1,0 +1,12 @@
+@startuml
+class OutstandingToken <<sealed>> <<partial>> {
+    + Token : string <<get>> <<set>>
+    + UserId : long? <<get>> <<set>>
+    + Jti : string <<get>> <<set>>
+}
+Base <|-- OutstandingToken
+OutstandingToken --> "CreatedAt" DateTime
+OutstandingToken --> "ExpiresAt" DateTime
+OutstandingToken --> "TokenBlacklistBlacklistedtoken" BlacklistedToken
+OutstandingToken --> "User" User
+@enduml

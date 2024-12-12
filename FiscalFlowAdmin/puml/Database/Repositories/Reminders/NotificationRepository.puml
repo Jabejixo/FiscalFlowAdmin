@@ -1,0 +1,7 @@
+@startuml
+class NotificationRepository {
+}
+class "BaseRepository`1"<T> {
+}
+"BaseRepository`1" "<Notification>" <|-- NotificationRepository
+@enduml

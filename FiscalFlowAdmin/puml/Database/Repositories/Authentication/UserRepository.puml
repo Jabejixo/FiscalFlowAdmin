@@ -1,0 +1,9 @@
+@startuml
+class UserRepository {
+    + Login(email:string, password:string) : bool
+    + <<new>> <<async>> AddAsync(entity:User?) : Task<bool>
+}
+class "BaseRepository`1"<T> {
+}
+"BaseRepository`1" "<User>" <|-- UserRepository
+@enduml

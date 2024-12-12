@@ -1,0 +1,8 @@
+@startuml
+class ViewModelBase {
+    +  <<event>> PropertyChanged : PropertyChangedEventHandler? 
+    # <<virtual>> OnPropertyChanged(propertyName:string?) : void
+    # SetField(field:T, value:T, propertyName:string?) : bool
+}
+INotifyPropertyChanged <|-- ViewModelBase
+@enduml

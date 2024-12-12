@@ -1,0 +1,973 @@
+// Файл: G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\Model\Base.cs
+﻿using System.Collections;
+using System.Collections.Concurrent;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Reflection;
+using System.Runtime.CompilerServices;
+using FiscalFlowAdmin.Model.Attributes;
+using Microsoft.EntityFrameworkCore;
+using PropertyChanged;
+
+namespace FiscalFlowAdmin.Model;
+
+[AddINotifyPropertyChangedInterface]
+public abstract class Base : INotifyPropertyChanged, INotifyDataErrorInfo
+{
+    [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    [FormIgnore]
+    [DataGridIgnore]
+    [Column("id")]
+    public virtual long Id { get; set; }
+    
+       // Реализация INotifyDataErrorInfo
+        private readonly ConcurrentDictionary<string, List<string>> _errors = new ConcurrentDictionary<string, List<string>>();
+        
+        [FormIgnore]
+        [DataGridIgnore]
+        public bool HasErrors => _errors.Any();
+
+        public event EventHandler<DataErrorsChangedEventArgs>? ErrorsChanged;
+
+        public IEnumerable GetErrors(string? propertyName)
+        {
+            if (string.IsNullOrEmpty(propertyName))
+                return _errors.SelectMany(err => err.Value);
+            if (_errors.TryGetValue(propertyName, out var errors))
+                return errors;
+            return Enumerable.Empty<string>();
+        }
+
+        public void ValidateProperty(string propertyName, object? value)
+        {
+            var validationContext = new ValidationContext(this)
+            {
+                MemberName = propertyName
+            };
+            var validationResults = new List<ValidationResult>();
+
+            // Очистка предыдущих ошибок
+            _errors.TryRemove(propertyName, out _);
+
+            // Валидация свойства
+            bool isValid = Validator.TryValidateProperty(value, validationContext, validationResults);
+
+            if (!isValid)
+            {
+                _errors[propertyName] = validationResults.Select(r => r.ErrorMessage!).ToList();
+            }
+
+            // Вызов события ErrorsChanged
+            OnErrorsChanged(propertyName);
+        }
+
+        public void ValidateAllProperties()
+        {
+            var properties = this.GetType().GetProperties()
+                .Where(p => p.CanRead && p.CanWrite && p.GetCustomAttributes<ValidationAttribute>().Any());
+
+            foreach (var property in properties)
+            {
+                var value = property.GetValue(this);
+                ValidateProperty(property.Name, value);
+            }
+        }
+
+        protected virtual void OnErrorsChanged(string propertyName)
+        {
+            ErrorsChanged?.Invoke(this, new DataErrorsChangedEventArgs(propertyName));
+        }
+
+        // Реализация INotifyPropertyChanged
+        public event PropertyChangedEventHandler? PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+        
+}
+
+// Файл: G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\Model\Bill.cs
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+using PropertyChanged;
+using FiscalFlowAdmin.Model.Attributes;
+
+namespace FiscalFlowAdmin.Model;
+
+[Table("finances_app_bill")]
+[Index("CurrencyId", Name = "finances_ap_currenc_17b09c_idx")]
+[Index("ProfileId", Name = "finances_ap_profile_a16c59_idx")]
+[Index("CurrencyId", Name = "finances_app_bill_currency_id_88fc4021")]
+[Index("ProfileId", Name = "finances_app_bill_profile_id_f1838735")]
+[AddINotifyPropertyChangedInterface]
+public sealed partial class Bill : Base
+{
+    [Column("is_main")]
+    [Display(Name = "Основной счет")]
+    [Order(1)]
+    [Tooltip("Указывает, является ли это основной счет.")]
+    public bool IsMain { get; set; }
+
+    [Column("balance")]
+    [Precision(12, 2)]
+    [Display(Name = "Баланс")]
+    [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
+    [Order(2)]
+    [Required(ErrorMessage = "Баланс обязателен.")]
+    [Tooltip("Текущий баланс счета.")]
+    public decimal Balance { get; set; }
+
+    [Column("is_deleted")]
+    [FormIgnore]
+    [DataGridIgnore]
+    public bool? IsDeleted { get; set; }
+
+    [Column("profile_id")]
+    [FormIgnore]
+    [DataGridIgnore]
+    [Display(Name = "Профиль")]
+    [Tooltip("Связанный ID профиля.")]
+    public long ProfileId { get; set; }
+
+    [Column("currency_id")]
+    [FormIgnore]
+    [DataGridIgnore]
+    [Display(Name = "Валюта")]
+    [Tooltip("Валюта, связанная со счетом.")]
+    public long CurrencyId { get; set; }
+
+    [ForeignKey("CurrencyId")]
+    [DisplayMemberPath("Name")]
+    [Display(Name = "Валюта")]
+    [Tooltip("Чей профиль")]
+    public Currency Currency { get; set; } = null!;
+
+    [ForeignKey("ProfileId")]
+    [Display(Name = "Профиль пользователя")]
+    [Tooltip("Чей счет")]
+    [DisplayMemberPath("User.Email")] 
+    public Profile Profile { get; set; } = null!;
+}
+
+// Файл: G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\Model\Credit.cs
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+using PropertyChanged;
+using FiscalFlowAdmin.Model.Attributes;
+
+namespace FiscalFlowAdmin.Model;
+
+[Table("finances_app_credit")]
+[Index("BillId", Name = "finances_ap_bill_id_444031_idx")]
+[Index("BillId", Name = "finances_app_credit_bill_id_d22a52cd")]
+[AddINotifyPropertyChangedInterface]
+public sealed partial class Credit : Base
+{
+    [Column("amount")]
+    [Precision(12, 2)]
+    [Display(Name = "Сумма")]
+    [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
+    [Order(1)]
+    [Required(ErrorMessage = "Сумма обязательна.")]
+    [Tooltip("Общая сумма кредита.")]
+    public decimal Amount { get; set; }
+
+    [Column("term")]
+    [Display(Name = "Срок (месяцы)")]
+    [Order(2)]
+    [Required(ErrorMessage = "Срок обязательен.")]
+    [Tooltip("Срок кредита в месяцах.")]
+    public int Term { get; set; }
+
+    [Column("interest_rate")]
+    [Precision(5, 2)]
+    [Display(Name = "Процентная ставка (%)")]
+    [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
+    [Order(3)]
+    [Required(ErrorMessage = "Процентная ставка обязательна.")]
+    [Tooltip("Процентная ставка по кредиту.")]
+    public decimal InterestRate { get; set; }
+
+    [Column("paid_amount")]
+    [Precision(12, 2)]
+    [Display(Name = "Оплачено")]
+    [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
+    [Order(4)]
+    [Tooltip("Сумма, уже выплаченная.")]
+    public decimal PaidAmount { get; set; }
+
+    [Column("remaining_amount")]
+    [Precision(12, 2)]
+    [Display(Name = "Оставшаяся сумма")]
+    [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
+    [Order(5)]
+    [Tooltip("Сумма, остающаяся к выплате.")]
+    public decimal RemainingAmount { get; set; }
+
+    [Column("is_deleted")]
+    [FormIgnore]
+    [DataGridIgnore]
+    public bool IsDeleted { get; set; }
+
+    [Column("bill_id")]
+    [FormIgnore]
+    [DataGridIgnore]
+    [Display(Name = "Счет")]
+    [Tooltip("Связанный ID счета.")]
+    public long BillId { get; set; }
+
+    [ForeignKey("BillId")]
+    [FormIgnore]
+    [DataGridIgnore]
+    [DisplayMemberPath("Id")] // При необходимости скорректируйте на основе свойств Bill
+    public Bill Bill { get; set; } = null!;
+}
+
+
+// Файл: G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\Model\Currency.cs
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+using PropertyChanged;
+using FiscalFlowAdmin.Model.Attributes;
+
+namespace FiscalFlowAdmin.Model;
+
+[Table("finances_app_currency")]
+[AddINotifyPropertyChangedInterface]
+public sealed partial class Currency : Base
+{
+    [Column("name")]
+    [StringLength(5)]
+    [Display(Name = "Название валюты")]
+    [Order(1)]
+    [Required(ErrorMessage = "Название валюты обязательно.")]
+    [Tooltip("Краткое название валюты (например, USD, EUR).")]
+    public string Name { get; set; } = null!;
+
+    [Column("value")]
+    [Precision(12, 2)]
+    [Display(Name = "Значение валюты")]
+    [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
+    [Order(2)]
+    [Required(ErrorMessage = "Значение валюты обязательно.")]
+    [Tooltip("Значение валюты относительно базовой валюты.")]
+    public decimal Value { get; set; }
+
+    [Column("is_deleted")]
+    [FormIgnore]
+    [DataGridIgnore]
+    public bool IsDeleted { get; set; }
+}
+
+// Файл: G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\Model\DailyCategoryExpense.cs
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+using PropertyChanged;
+using FiscalFlowAdmin.Model.Attributes;
+
+namespace FiscalFlowAdmin.Model;
+
+[Table("finances_app_dailycategoryexpense")]
+[Index("CategoryId", Name = "finances_ap_categor_1843f5_idx")]
+[Index("DailyReportId", Name = "finances_ap_daily_r_36cd3e_idx")]
+[Index("CategoryId", Name = "finances_app_dailycategoryexpense_category_id_c1b2af05")]
+[Index("DailyReportId", Name = "finances_app_dailycategoryexpense_daily_report_id_ee07bcdc")]
+[AddINotifyPropertyChangedInterface]
+public sealed partial class DailyCategoryExpense : Base
+{
+    [Column("expense_amount")]
+    [Precision(12, 2)]
+    [Display(Name = "Сумма расхода")]
+    [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
+    [Order(1)]
+    [Required(ErrorMessage = "Сумма расхода обязательна.")]
+    [Tooltip("Сумма расхода по категории.")]
+    public decimal ExpenseAmount { get; set; }
+
+    [Column("daily_report_id")]
+    [FormIgnore]
+    [DataGridIgnore]
+    [Display(Name = "Ежедневный отчет")]
+    [Tooltip("Связанный ID ежедневного отчета.")]
+    public long DailyReportId { get; set; }
+
+    [Column("category_id")]
+    [FormIgnore]
+    [DataGridIgnore]
+    [Display(Name = "Категория")]
+    [Tooltip("Связанный ID категории.")]
+    public long CategoryId { get; set; }
+
+    [ForeignKey("CategoryId")]
+    [FormIgnore]
+    [DataGridIgnore]
+    [DisplayMemberPath("Name")]
+    public TransactionCategory Category { get; set; } = null!;
+
+    [ForeignKey("DailyReportId")]
+    [FormIgnore]
+    [DataGridIgnore]
+    [DisplayMemberPath("Date")]
+    public DailyReport DailyReport { get; set; } = null!;
+}
+
+// Файл: G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\Model\DailyReport.cs
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+using PropertyChanged;
+using FiscalFlowAdmin.Model.Attributes;
+
+namespace FiscalFlowAdmin.Model;
+
+[Table("finances_app_dailyreport")]
+[Index("ProfileId", Name = "finances_ap_profile_af7197_idx")]
+[Index("ProfileId", Name = "finances_app_dailyreport_profile_id_cdac02f8")]
+[AddINotifyPropertyChangedInterface]
+public sealed partial class DailyReport : Base
+{
+    [Column("date")]
+    [Display(Name = "Дата отчета")]
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+    [Order(1)]
+    [Required(ErrorMessage = "Дата обязательна.")]
+    [Tooltip("Дата ежедневного отчета.")]
+    public DateOnly Date { get; set; }
+
+    [Column("total_income")]
+    [Precision(12, 2)]
+    [Display(Name = "Общий доход")]
+    [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
+    [Order(2)]
+    [Required(ErrorMessage = "Общий доход обязателен.")]
+    [Tooltip("Общий доход за день.")]
+    public decimal TotalIncome { get; set; }
+
+    [Column("total_expense")]
+    [Precision(12, 2)]
+    [Display(Name = "Общие расходы")]
+    [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
+    [Order(3)]
+    [Required(ErrorMessage = "Общие расходы обязательны.")]
+    [Tooltip("Общие расходы за день.")]
+    public decimal TotalExpense { get; set; }
+
+    [Column("is_deleted")]
+    [FormIgnore]
+    [DataGridIgnore]
+    public bool IsDeleted { get; set; }
+
+    [Column("profile_id")]
+    [FormIgnore]
+    [DataGridIgnore]
+    [Display(Name = "Профиль")]
+    [Tooltip("Связанный ID профиля.")]
+    public long ProfileId { get; set; }
+
+    [InverseProperty("DailyReport")]
+    [FormIgnore]
+    [DataGridIgnore]
+    public ICollection<DailyCategoryExpense> FinancesAppDailycategoryexpenses { get; set; } = new List<DailyCategoryExpense>();
+
+    [ForeignKey("ProfileId")]
+    [FormIgnore]
+    [DataGridIgnore]
+    [DisplayMemberPath("FirstName")] // При необходимости скорректируйте на основе свойств Profile
+    public Profile Profile { get; set; } = null!;
+}
+
+
+// Файл: G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\Model\Debt.cs
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+using PropertyChanged;
+using FiscalFlowAdmin.Model.Attributes;
+
+namespace FiscalFlowAdmin.Model;
+
+[Table("finances_app_debt")]
+[Index("BillId", Name = "finances_ap_bill_id_83d405_idx")]
+[Index("BillId", Name = "finances_app_debt_bill_id_c93ab690")]
+[AddINotifyPropertyChangedInterface]
+public sealed partial class Debt : Base
+{
+    [Column("amount")]
+    [Precision(12, 2)]
+    [Display(Name = "Сумма")]
+    [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
+    [Order(1)]
+    [Required(ErrorMessage = "Сумма обязательна.")]
+    [Tooltip("Сумма долга.")]
+    public decimal Amount { get; set; }
+
+    [Column("debtor")]
+    [StringLength(30)]
+    [Display(Name = "Должник")]
+    [Order(2)]
+    [Required(ErrorMessage = "Должник обязателен.")]
+    [Tooltip("Имя должника.")]
+    public string Debtor { get; set; } = null!;
+
+    [Column("description")]
+    [Display(Name = "Описание")]
+    [Order(3)]
+    [Required(ErrorMessage = "Описание обязательно.")]
+    [Tooltip("Описание долга.")]
+    public string Description { get; set; } = null!;
+
+    [Column("is_deleted")]
+    [FormIgnore]
+    [DataGridIgnore]
+    public bool IsDeleted { get; set; }
+
+    [Column("bill_id")]
+    [FormIgnore]
+    [DataGridIgnore]
+    [Display(Name = "Счет")]
+    [Tooltip("Связанный ID счета.")]
+    public long BillId { get; set; }
+
+    [ForeignKey("BillId")]
+    [FormIgnore]
+    [DataGridIgnore]
+    [DisplayMemberPath("Id")] // При необходимости скорректируйте на основе свойств Bill
+    public Bill Bill { get; set; } = null!;
+}
+
+// Файл: G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\Model\DeviceToken.cs
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+using PropertyChanged;
+using FiscalFlowAdmin.Model.Attributes;
+
+namespace FiscalFlowAdmin.Model;
+
+[Table("authentication_devicetoken")]
+[Index("ProfileId", Name = "authentication_devicetoken_profile_id_0fbaea76")]
+[AddINotifyPropertyChangedInterface]
+public sealed partial class DeviceToken : Base
+{
+    [Column("token")]
+    [StringLength(255)]
+    [Display(Name = "Токен устройства")]
+    [Order(1)]
+    [Required(ErrorMessage = "Токен обязателен.")]
+    [Tooltip("Токен аутентификации для устройства.")]
+    public string Token { get; set; } = null!;
+
+    [Column("profile_id")]
+    [FormIgnore]
+    [DataGridIgnore]
+    [Display(Name = "Профиль")]
+    [Tooltip("Связанный ID профиля.")]
+    public long ProfileId { get; set; }
+
+    [ForeignKey("ProfileId")]
+    [FormIgnore]
+    [DataGridIgnore]
+    public Profile Profile { get; set; } = null!;
+}
+
+// Файл: G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\Model\MonthlyExpense.cs
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+using PropertyChanged;
+using FiscalFlowAdmin.Model.Attributes;
+
+namespace FiscalFlowAdmin.Model;
+
+[Table("finances_app_monthlyexpense")]
+[Index("BillId", Name = "finances_ap_bill_id_746c78_idx")]
+[Index("BillId", Name = "finances_app_monthlyexpense_bill_id_37680f98")]
+[AddINotifyPropertyChangedInterface]
+public sealed partial class MonthlyExpense : Base
+{
+    [Column("amount")]
+    [Precision(12, 2)]
+    [Display(Name = "Сумма")]
+    [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
+    [Order(1)]
+    [Required(ErrorMessage = "Сумма обязательна.")]
+    [Tooltip("Сумма ежемесячного расхода.")]
+    public decimal Amount { get; set; }
+
+    [Column("is_deleted")]
+    [FormIgnore]
+    [DataGridIgnore]
+    public bool IsDeleted { get; set; }
+
+    [Column("next_payment_date")]
+    [Display(Name = "Дата следующего платежа")]
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+    [Order(2)]
+    [Required(ErrorMessage = "Дата следующего платежа обязательна.")]
+    [Tooltip("Дата следующего платежа.")]
+    public DateOnly NextPaymentDate { get; set; }
+
+    [Column("period")]
+    [StringLength(10)]
+    [Display(Name = "Период")]
+    [Order(3)]
+    [Required(ErrorMessage = "Период обязательный.")]
+    [Tooltip("Период платежа (например, ежемесячно, ежеквартально).")]
+    public string Period { get; set; } = null!;
+
+    [Column("bill_id")]
+    [FormIgnore]
+    [DataGridIgnore]
+    [Display(Name = "Счет")]
+    [Tooltip("Связанный ID счета.")]
+    public long BillId { get; set; }
+
+    [ForeignKey("BillId")]
+    [DisplayMemberPath("Balance")] // При необходимости скорректируйте на основе свойств Bill
+    public Bill Bill { get; set; } = null!;
+}
+
+// Файл: G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\Model\Notification.cs
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using PropertyChanged;
+using FiscalFlowAdmin.Model.Attributes;
+
+namespace FiscalFlowAdmin.Model;
+
+[Table("reminders_notification")]
+[AddINotifyPropertyChangedInterface]
+public sealed partial class Notification : Base
+{
+    [Column("subject")]
+    [StringLength(255)]
+    [Display(Name = "Тема")]
+    [Order(1)]
+    [Required(ErrorMessage = "Тема обязательна.")]
+    [Tooltip("Тема уведомления.")]
+    public string Subject { get; set; } = null!;
+
+    [Column("description")]
+    [Display(Name = "Описание")]
+    [Order(2)]
+    [Tooltip("Подробное описание уведомления.")]
+    public string? Description { get; set; }
+
+    [Column("send_time")]
+    [Display(Name = "Время отправки")]
+    [DisplayFormat(DataFormatString = "{0:hh\\:mm}", ApplyFormatInEditMode = true)]
+    [Order(3)]
+    [Tooltip("Время, когда уведомление должно быть отправлено.")]
+    public TimeOnly? SendTime { get; set; }
+}
+
+// Файл: G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\Model\NotificationProfile.cs
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+using PropertyChanged;
+using FiscalFlowAdmin.Model.Attributes;
+
+namespace FiscalFlowAdmin.Model;
+
+[Table("reminders_notification_profiles")]
+[Index("NotificationId", "ProfileId", Name = "reminders_notification_p_notification_id_profile__a95e6e84_uniq", IsUnique = true)]
+[Index("NotificationId", Name = "reminders_notification_profiles_notification_id_3654fc2b")]
+[Index("ProfileId", Name = "reminders_notification_profiles_profile_id_b218a596")]
+[AddINotifyPropertyChangedInterface]
+public sealed partial class NotificationProfile : Base
+{
+    [Column("notification_id")]
+    [FormIgnore]
+    [DataGridIgnore]
+    [Display(Name = "Уведомление")]
+    [Tooltip("Связанный ID уведомления.")]
+    public long NotificationId { get; set; }
+
+    [Column("profile_id")]
+    [FormIgnore]
+    [DataGridIgnore]
+    [Display(Name = "Профиль")]
+    [Tooltip("Связанный ID профиля.")]
+    public long ProfileId { get; set; }
+
+    [ForeignKey("NotificationId")]
+    [FormIgnore]
+    [DataGridIgnore]
+    [DisplayMemberPath("Subject")]
+    public Notification Notification { get; set; } = null!;
+
+    [ForeignKey("ProfileId")]
+    [FormIgnore]
+    [DataGridIgnore]
+    [DisplayMemberPath("FirstName")] // При необходимости скорректируйте на основе свойств Profile
+    public Profile Profile { get; set; } = null!;
+}
+
+// Файл: G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\Model\Profile.cs
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+using PropertyChanged;
+using FiscalFlowAdmin.Model.Attributes;
+using Microsoft.EntityFrameworkCore.ChangeTracking;
+
+namespace FiscalFlowAdmin.Model;
+
+[Table("authentication_profile")]
+[Index("UserId", Name = "authentication_profile_user_id_key", IsUnique = true)]
+[AddINotifyPropertyChangedInterface]
+public sealed partial class Profile : Base
+{
+    [Column("image")]
+    [StringLength(100)]
+    [Display(Name = "Изображение профиля")]
+    [Order(1)]
+    [Tooltip("URL или путь к изображению профиля.")]
+    public string? Image { get; set; }
+
+    [Column("user_id")]
+    [FormIgnore]
+    [DataGridIgnore]
+    [Display(Name = "Пользователь")]
+    [Tooltip("Связанный ID пользователя.")]
+    public long UserId { get; set; }
+
+    [ForeignKey("UserId")]
+    [DisplayMemberPath("Email")]
+    [Display(Name = "Пользователь")]
+    [Tooltip("Чей профиль")]
+    
+    public User User { get; set; } = null!;
+}
+
+// Файл: G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\Model\Transaction.cs
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
+using PropertyChanged;
+using FiscalFlowAdmin.Model.Attributes;
+
+namespace FiscalFlowAdmin.Model;
+
+[Table("finances_app_transaction")]
+[Index("BillId", Name = "finances_ap_bill_id_f7f665_idx")]
+[Index("CategoryId", Name = "finances_ap_categor_75baae_idx")]
+[Index("BillId", Name = "finances_app_transaction_bill_id_9a0a9218")]
+[Index("CategoryId", Name = "finances_app_transaction_category_id_113b376f")]
+[AddINotifyPropertyChangedInterface]
+public sealed partial class Transaction : Base
+{
+    [Column("is_deleted")]
+    [FormIgnore]
+    [DataGridIgnore]
+    public bool IsDeleted { get; set; }
+
+    [Column("amount")]
+    [Precision(12, 2)]
+    [Display(Name = "Сумма")]
+    [DisplayFormat(DataFormatString = "{0:N2}", ApplyFormatInEditMode = true)]
+    [Order(1)]
+    [Required(ErrorMessage = "Сумма обязательна.")]
+    [Tooltip("Сумма транзакции.")]
+    public decimal Amount { get; set; }
+
+    [Column("date")]
+    [Display(Name = "Дата транзакции")]
+    [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+    [Order(2)]
+    [Required(ErrorMessage = "Дата транзакции обязательна.")]
+    [Tooltip("Дата транзакции.")]
+    public DateOnly Date { get; set; }
+
+    [Column("bill_id")]
+    [FormIgnore]
+    [DataGridIgnore]
+    [Display(Name = "Счет")]
+    [Tooltip("Связанный ID счета.")]
+    public long BillId { get; set; }
+
+    [Column("category_id")]
+    [FormIgnore]
+    [DataGridIgnore]
+    [Display(Name = "Категория")]
+    [Tooltip("Связанный ID категории.")]
+    public long CategoryId { get; set; }
+
+    [ForeignKey("BillId")]
+    [Display(Name = "Счет")]
+    [Tooltip("Чей счет")]
+    [DisplayMemberPath("Profile")] // При необходимости скорректируйте на основе свойств Bill
+    public Bill Bill { get; set; } = null!;
+
+    [ForeignKey("CategoryId")]
+    [Display(Name = "Категория транзакции")]
+    [Tooltip("Укажите категорию транзакции")]
+    [DisplayMemberPath("Name")]
+    public TransactionCategory Category { get; set; } = null!;
+}
+
+// Файл: G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\Model\TransactionCategory.cs
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using PropertyChanged;
+using FiscalFlowAdmin.Model.Attributes;
+
+namespace FiscalFlowAdmin.Model;
+
+[Table("finances_app_transactioncategory")]
+[AddINotifyPropertyChangedInterface]
+public sealed partial class TransactionCategory : Base
+{
+    [Column("name")]
+    [StringLength(50)]
+    [Display(Name = "Название категории")]
+    [Order(1)]
+    [Required(ErrorMessage = "Название категории обязательно.")]
+    [Tooltip("Название категории транзакции.")]
+    public string Name { get; set; } = null!;
+
+    [Column("is_deleted")]
+    [FormIgnore]
+    [DataGridIgnore]
+    public bool IsDeleted { get; set; }
+
+    [Column("is_income")]
+    [Display(Name = "Доход")]
+    [Order(2)]
+    [Required(ErrorMessage = "Поле доход обязательно.")]
+    [Tooltip("Указывает, является ли категория доходной.")]
+    public bool IsIncome { get; set; } =  false;
+}
+
+// Файл: G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\Model\User.cs
+﻿using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Text.Json.Serialization;
+using Microsoft.EntityFrameworkCore;
+using PropertyChanged;
+using FiscalFlowAdmin.Model.Attributes;
+
+namespace FiscalFlowAdmin.Model;
+
+ [Table("authentication_user")]
+    [Index("Email", Name = "authentication_user_email_key", IsUnique = true)]
+    [AddINotifyPropertyChangedInterface]
+    public sealed partial class User : Base
+    {
+        [Column("password")]
+        [StringLength(8)]
+        [MinLength(6)]
+        [RegularExpression(@"^(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{6,8}$", ErrorMessage = "Пароль должен содержать от 6 до 8 символов, включая минимум одну заглавную букву, одну цифру и один специальный символ.")]
+        [Display(Name = "Пароль")]
+        [Order(2)]
+        [Required(ErrorMessage = "Пароль обязателен.")]
+        [DataType(DataType.Password)]
+        [Placeholder("Введите ваш пароль")]
+        [Tooltip("Пароль пользователя.")]
+        public string Password { get; set; } = null!;
+
+        [Column("last_login")]
+        [FormIgnore]
+        [Display(Name = "Последний вход")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd HH:mm:ss}", ApplyFormatInEditMode = true)]
+        [Tooltip("Время последнего входа в систему.")]
+        public DateTime? LastLogin { get; set; }
+
+        [Column("is_superuser")]
+        [Display(Name = "Суперпользователь")]
+        [FormIgnore]
+        [DataGridIgnore]
+        [DefaultValue(false)]
+        [Tooltip("Указывает, имеет ли пользователь привилегии суперпользователя.")]
+        public bool IsSuperuser { get; set; }
+
+        [Column("email")]
+        [StringLength(254)]
+        [Display(Name = "Адрес электронной почты")]
+        [Placeholder("Введите ваш почту")]
+        [Order(1)]
+        [Required(ErrorMessage = "Адрес электронной почты обязателен.")]
+        [RegularExpression(@"^[^@\s]+@[^@\s]+\.[^@\s]+$", ErrorMessage = "Неверный формат электронной почты.")]
+        [Tooltip("Адрес электронной почты пользователя.")]
+        [Nullable(false)]
+        [Blank(false)]
+        public string Email { get; set; } = null!;
+
+        [Column("first_name")]
+        [StringLength(30)]
+        [Display(Name = "Имя")]
+        [Order(3)]
+        [Tooltip("Имя пользователя.")]
+        public string? FirstName { get; set; }
+
+        [Column("last_name")]
+        [StringLength(30)]
+        [Display(Name = "Фамилия")]
+        [Order(4)]
+        [Tooltip("Фамилия пользователя.")]
+        public string? LastName { get; set; }
+
+        [Column("birthday")]
+        [Display(Name = "День рождения")]
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        [Order(5)]
+        [Tooltip("Дата рождения пользователя.")]
+        public DateOnly? Birthday { get; set; }
+
+        [Column("is_active")]
+        [Display(Name = "Активен")]
+        [Order(6)]
+        [DefaultValue(true)]
+        [Required(ErrorMessage = "Поле активен обязательно.")]
+        [Tooltip("Указывает, активна ли учетная запись пользователя.")]
+        public bool IsActive { get; set; }
+
+        [Column("is_confirmed_email")]
+        [Display(Name = "Электронная почта подтверждена")]
+        [Order(7)]
+        [Tooltip("Указывает, подтверждена ли электронная почта пользователя.")]
+        public bool? IsConfirmedEmail { get; set; }
+
+        [Column("is_staff")]
+        [Display(Name = "Сотрудник")]
+        [Order(8)]
+        [Required(ErrorMessage = "Поле сотрудник обязательно.")]
+        [Tooltip("Указывает, является ли пользователь сотрудником.")]
+        public bool IsStaff { get; set; }
+
+        // Removed IDataErrorInfo implementation
+    }
+
+
+// Файл: G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\Model\Attributes\BlankAttribute.cs
+﻿namespace FiscalFlowAdmin.Model.Attributes;
+
+[AttributeUsage(AttributeTargets.Property)]
+public class BlankAttribute : Attribute
+{
+    public bool AllowBlank { get; }
+
+    public BlankAttribute(bool allowBlank = true)
+    {
+        AllowBlank = allowBlank;
+    }
+}
+
+// Файл: G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\Model\Attributes\CollectionAttribute.cs
+﻿namespace FiscalFlowAdmin.Model.Attributes;
+
+[AttributeUsage(AttributeTargets.Property)]
+public class CollectionAttribute : Attribute
+{
+    public string DisplayMember { get; }
+
+    public CollectionAttribute(string displayMember)
+    {
+        DisplayMember = displayMember;
+    }
+}
+
+// Файл: G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\Model\Attributes\DataGridIgnoreAttribute.cs
+﻿namespace FiscalFlowAdmin.Model.Attributes;
+
+[AttributeUsage(AttributeTargets.Property)]
+public class DataGridIgnoreAttribute : Attribute
+{
+}
+
+// Файл: G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\Model\Attributes\DisplayMemberPathAttribute.cs
+﻿namespace FiscalFlowAdmin.Model.Attributes;
+
+[AttributeUsage(AttributeTargets.Property)]
+public class DisplayMemberPathAttribute : Attribute
+{
+    public string PropertyName { get; }
+
+    public DisplayMemberPathAttribute(string propertyName)
+    {
+        PropertyName = propertyName;
+    }
+}
+
+// Файл: G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\Model\Attributes\FormIgnoreAttribute.cs
+﻿namespace FiscalFlowAdmin.Model.Attributes;
+
+[AttributeUsage(AttributeTargets.Property)]
+public class FormIgnoreAttribute : Attribute
+{
+}
+
+// Файл: G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\Model\Attributes\NullableAttribute.cs
+﻿namespace FiscalFlowAdmin.Model.Attributes;
+
+[AttributeUsage(AttributeTargets.Property)]
+public class NullableAttribute : Attribute
+{
+    public bool AllowNull { get; }
+
+    public NullableAttribute(bool allowNull = true)
+    {
+        AllowNull = allowNull;
+    }
+}
+
+// Файл: G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\Model\Attributes\OrderAttribute.cs
+﻿namespace FiscalFlowAdmin.Model.Attributes;
+
+[AttributeUsage(AttributeTargets.Property)]
+public class OrderAttribute : Attribute
+{
+    public int Order { get; }
+
+    public OrderAttribute(int order)
+    {
+        Order = order;
+    }
+}
+
+// Файл: G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\Model\Attributes\PlaceholderAttribute.cs
+﻿namespace FiscalFlowAdmin.Model.Attributes;
+
+[AttributeUsage(AttributeTargets.Property)]
+public class PlaceholderAttribute : Attribute
+{
+    public string Text { get; }
+
+    public PlaceholderAttribute(string text)
+    {
+        Text = text;
+    }
+}
+
+// Файл: G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\Model\Attributes\PreHashed.cs
+﻿namespace FiscalFlowAdmin.Model.Attributes;
+
+public class PreHashed : Attribute
+{
+    
+}
+
+// Файл: G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\Model\Attributes\TooltipAttribute.cs
+﻿namespace FiscalFlowAdmin.Model.Attributes;
+
+[AttributeUsage(AttributeTargets.Property)]
+public class TooltipAttribute : Attribute
+{
+    public string Text { get; }
+
+    public TooltipAttribute(string text)
+    {
+        Text = text;
+    }
+}
+

@@ -1,0 +1,9 @@
+@startuml
+class NotificationProfile <<sealed>> <<partial>> {
+    + NotificationId : long <<get>> <<set>>
+    + ProfileId : long <<get>> <<set>>
+}
+Base <|-- NotificationProfile
+NotificationProfile o-> "Notification" Notification
+NotificationProfile o-> "Profile" Profile
+@enduml

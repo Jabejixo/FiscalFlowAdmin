@@ -1,0 +1,8 @@
+@startuml
+class Profile <<sealed>> <<partial>> {
+    + Image : string? <<get>> <<set>>
+    + UserId : long <<get>> <<set>>
+}
+Base <|-- Profile
+Profile o-> "User" User
+@enduml
