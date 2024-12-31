@@ -134,6 +134,19 @@ namespace FiscalFlowAdmin.ViewModel
         {
             try
             {
+                // Показываем пользователю диалог, в котором он выбирает:
+                // "Yes" -> Бэкап с данными
+                // "No"  -> Бэкап только структуры
+                MessageBoxResult result = MessageBox.Show(
+                    "Вы хотите бэкапить базу данных вместе с данными?\n\n" +
+                    "Нажмите 'Да', чтобы включить данные,\n" +
+                    "или 'Нет', чтобы сохранить только структуру.",
+                    "Выбор типа резервного копирования",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question);
+
+                bool backupWithData = (result == MessageBoxResult.Yes);
+
                 SaveFileDialog saveFileDialog = new SaveFileDialog
                 {
                     Filter = "SQL Files (*.sql)|*.sql",
@@ -155,10 +168,19 @@ namespace FiscalFlowAdmin.ViewModel
                     File.WriteAllText(pgpassFilePath, $"{host}:{port}:{database}:{username}:{password}");
                     Environment.SetEnvironmentVariable("PGPASSFILE", pgpassFilePath);
 
+                    // Формируем аргументы для pg_dump
+                    // -F c  -> формат custom (архив)
+                    // -b    -> включает blob-ы
+                    // -v    -> verbose
+                    // -s    -> schema-only (ТОЛЬКО структура), если backupWithData == false
+                    // Если нужно получить .sql (plain text), можно заменить -F c на -F p,
+                    // но тогда придётся учесть особенности восстановления из plain text.
+                    var schemaOnlyFlag = backupWithData ? "" : "-s ";
                     var psi = new ProcessStartInfo
                     {
                         FileName = "pg_dump",
-                        Arguments = $"-h {host} -p {port} -U {username} -F c -b -v -f \"{backupFilePath}\" {database}",
+                        Arguments = $"-h {host} -p {port} -U {username} " +
+                                    $"-F c -b -v {schemaOnlyFlag}-f \"{backupFilePath}\" {database}",
                         RedirectStandardOutput = true,
                         RedirectStandardError = true,
                         UseShellExecute = false,
@@ -178,7 +200,7 @@ namespace FiscalFlowAdmin.ViewModel
                         }
                     };
 
-                    // Подключение общего обработчика ошибок
+                    // Подключение общего обработчика ошибок (пример из вашего кода)
                     process.ErrorDataReceived += HandleProcessErrorDataReceived;
 
                     process.Start();

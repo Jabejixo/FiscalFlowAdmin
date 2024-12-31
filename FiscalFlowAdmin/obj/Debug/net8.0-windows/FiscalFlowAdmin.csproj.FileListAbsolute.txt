@@ -159,3 +159,4 @@ G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\bin\Debug\net8.0-windows\Micros
 G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\bin\Debug\net8.0-windows\Microsoft.WindowsAPICodePack.Shell.dll
 G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\obj\Debug\net8.0-windows\FiscalFlowAdmin.csproj.Fody.CopyLocal.cache
 G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\obj\Debug\net8.0-windows\FiscalFlowAdmin.csproj.Fody.RuntimeCopyLocal.cache
+G:\RiderProjects\FiscalFlowAdmin\FiscalFlowAdmin\obj\Debug\net8.0-windows\FiscalFlowAdmin.sourcelink.json

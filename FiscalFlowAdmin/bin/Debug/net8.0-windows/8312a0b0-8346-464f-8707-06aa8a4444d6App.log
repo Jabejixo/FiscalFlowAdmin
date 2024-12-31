@@ -1,0 +1,240 @@
+FiscalFlowAdmin Information: 0 : Логирование настроено успешно.
+    DateTime=2024-12-13T08:02:58.5822913Z
+FiscalFlowAdmin Information: 0 : Инициализация предыдущих метрик мониторинга завершена.
+    DateTime=2024-12-13T08:02:58.5945945Z
+FiscalFlowAdmin Information: 0 : Мониторинг базы данных обновлен успешно: Транзакций в минуту: 0,00, Вставлено строк: 0,00, Обновлено строк: 0,00, Удалено строк: 0,00, Кэш-хит: 0,00%, Активных соединений: 2
+    DateTime=2024-12-13T08:02:58.6286827Z
+FiscalFlowAdmin Information: 0 : Мониторинг базы данных обновлен успешно: Транзакций в минуту: 154,19, Вставлено строк: 0,00, Обновлено строк: 5,93, Удалено строк: 11,86, Кэш-хит: 100,00%, Активных соединений: 2
+    DateTime=2024-12-13T08:03:01.1891044Z
+FiscalFlowAdmin Information: 0 : Мониторинг базы данных обновлен успешно: Транзакций в минуту: 83,94, Вставлено строк: 0,00, Обновлено строк: 0,00, Удалено строк: 6,00, Кэш-хит: 100,00%, Активных соединений: 2
+    DateTime=2024-12-13T08:03:08.6357051Z
+FiscalFlowAdmin Information: 0 : Мониторинг базы данных обновлен успешно: Транзакций в минуту: 35,95, Вставлено строк: 0,00, Обновлено строк: 0,00, Удалено строк: 0,00, Кэш-хит: 0,00%, Активных соединений: 2
+    DateTime=2024-12-13T08:03:11.2037327Z
+FiscalFlowAdmin Information: 0 : Экспорт таблицы authentication_user в CSV завершен.
+    DateTime=2024-12-13T08:03:12.1815810Z
+FiscalFlowAdmin Information: 0 : Экспорт таблицы authentication_profile в CSV завершен.
+    DateTime=2024-12-13T08:03:12.1830406Z
+FiscalFlowAdmin Information: 0 : Экспорт таблицы authentication_devicetoken в CSV завершен.
+    DateTime=2024-12-13T08:03:12.1840579Z
+FiscalFlowAdmin Information: 0 : Экспорт таблицы finances_app_bill в CSV завершен.
+    DateTime=2024-12-13T08:03:12.1847814Z
+FiscalFlowAdmin Information: 0 : Экспорт таблицы finances_app_credit в CSV завершен.
+    DateTime=2024-12-13T08:03:12.1854688Z
+FiscalFlowAdmin Information: 0 : Экспорт таблицы finances_app_currency в CSV завершен.
+    DateTime=2024-12-13T08:03:12.1871354Z
+FiscalFlowAdmin Information: 0 : Экспорт таблицы finances_app_dailycategoryexpense в CSV завершен.
+    DateTime=2024-12-13T08:03:12.1881680Z
+FiscalFlowAdmin Information: 0 : Экспорт таблицы finances_app_dailyreport в CSV завершен.
+    DateTime=2024-12-13T08:03:12.1890292Z
+FiscalFlowAdmin Information: 0 : Экспорт таблицы finances_app_debt в CSV завершен.
+    DateTime=2024-12-13T08:03:12.1898215Z
+FiscalFlowAdmin Information: 0 : Экспорт таблицы finances_app_monthlyexpense в CSV завершен.
+    DateTime=2024-12-13T08:03:12.1909057Z
+FiscalFlowAdmin Information: 0 : Экспорт таблицы finances_app_rate в CSV завершен.
+    DateTime=2024-12-13T08:03:12.1920412Z
+FiscalFlowAdmin Information: 0 : Экспорт таблицы finances_app_transaction в CSV завершен.
+    DateTime=2024-12-13T08:03:12.1991437Z
+FiscalFlowAdmin Information: 0 : Экспорт таблицы finances_app_transactioncategory в CSV завершен.
+    DateTime=2024-12-13T08:03:12.2006197Z
+FiscalFlowAdmin Information: 0 : Экспорт в CSV успешно завершен.
+    DateTime=2024-12-13T08:03:13.5118231Z
+FiscalFlowAdmin Information: 0 : Мониторинг базы данных обновлен успешно: Транзакций в минуту: 119,85, Вставлено строк: 0,00, Обновлено строк: 0,00, Удалено строк: 0,00, Кэш-хит: 100,00%, Активных соединений: 2
+    DateTime=2024-12-13T08:03:18.6480195Z
+FiscalFlowAdmin Information: 0 : Мониторинг базы данных обновлен успешно: Транзакций в минуту: 119,83, Вставлено строк: 0,00, Обновлено строк: 0,00, Удалено строк: 0,00, Кэш-хит: 100,00%, Активных соединений: 2
+    DateTime=2024-12-13T08:03:21.2177162Z
+FiscalFlowAdmin Information: 0 : Мониторинг базы данных обновлен успешно: Транзакций в минуту: 35,98, Вставлено строк: 0,00, Обновлено строк: 0,00, Удалено строк: 0,00, Кэш-хит: 0,00%, Активных соединений: 2
+    DateTime=2024-12-13T08:03:28.6548590Z
+FiscalFlowAdmin Information: 0 : Мониторинг базы данных обновлен успешно: Транзакций в минуту: 35,94, Вставлено строк: 0,00, Обновлено строк: 0,00, Удалено строк: 0,00, Кэш-хит: 0,00%, Активных соединений: 2
+    DateTime=2024-12-13T08:03:31.2341681Z
+FiscalFlowAdmin Information: 0 : pg_dump: последний системный OID: 16383
+    DateTime=2024-12-13T08:03:32.7470628Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение расширений
+    DateTime=2024-12-13T08:03:32.7487854Z
+FiscalFlowAdmin Information: 0 : pg_dump: выявление членов расширений
+    DateTime=2024-12-13T08:03:32.7513221Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение схем
+    DateTime=2024-12-13T08:03:32.7527681Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение пользовательских таблиц
+    DateTime=2024-12-13T08:03:32.7530138Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение пользовательских функций
+    DateTime=2024-12-13T08:03:32.7626983Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение пользовательских типов
+    DateTime=2024-12-13T08:03:32.7792263Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение процедурных языков
+    DateTime=2024-12-13T08:03:32.7843584Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение пользовательских агрегатных функций
+    DateTime=2024-12-13T08:03:32.7856559Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение пользовательских операторов
+    DateTime=2024-12-13T08:03:32.7865706Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение пользовательских методов доступа
+    DateTime=2024-12-13T08:03:32.7896304Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение пользовательских классов операторов
+    DateTime=2024-12-13T08:03:32.7902018Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение пользовательских семейств операторов
+    DateTime=2024-12-13T08:03:32.7919362Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение пользовательских анализаторов текстового поиска
+    DateTime=2024-12-13T08:03:32.7935444Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение пользовательских шаблонов текстового поиска
+    DateTime=2024-12-13T08:03:32.7951217Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение пользовательских словарей текстового поиска
+    DateTime=2024-12-13T08:03:32.7966586Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение пользовательских конфигураций текстового поиска
+    DateTime=2024-12-13T08:03:32.7987648Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение пользовательских оболочек сторонних данных
+    DateTime=2024-12-13T08:03:32.8005515Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение пользовательских сторонних серверов
+    DateTime=2024-12-13T08:03:32.8020097Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение прав по умолчанию
+    DateTime=2024-12-13T08:03:32.8041232Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение пользовательских правил сортировки
+    DateTime=2024-12-13T08:03:32.8055024Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение пользовательских преобразований
+    DateTime=2024-12-13T08:03:32.8102627Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение приведений типов
+    DateTime=2024-12-13T08:03:32.8122385Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение преобразований
+    DateTime=2024-12-13T08:03:32.8145159Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение информации о наследовании таблиц
+    DateTime=2024-12-13T08:03:32.8147741Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение событийных триггеров
+    DateTime=2024-12-13T08:03:32.8164629Z
+FiscalFlowAdmin Information: 0 : pg_dump: поиск таблиц расширений
+    DateTime=2024-12-13T08:03:32.8185239Z
+FiscalFlowAdmin Information: 0 : pg_dump: поиск связей наследования
+    DateTime=2024-12-13T08:03:32.8218335Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение информации о столбцах интересующих таблиц
+    DateTime=2024-12-13T08:03:32.8218783Z
+FiscalFlowAdmin Information: 0 : pg_dump: поиск выражений по умолчанию для таблиц
+    DateTime=2024-12-13T08:03:32.8263212Z
+FiscalFlowAdmin Information: 0 : pg_dump: поиск ограничений-проверок для таблиц
+    DateTime=2024-12-13T08:03:32.8285839Z
+FiscalFlowAdmin Information: 0 : pg_dump: пометка наследованных столбцов в подтаблицах
+    DateTime=2024-12-13T08:03:32.8294117Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение информации о секционировании
+    DateTime=2024-12-13T08:03:32.8294628Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение индексов
+    DateTime=2024-12-13T08:03:32.8304560Z
+FiscalFlowAdmin Information: 0 : pg_dump: пометка индексов в секционированных таблицах
+    DateTime=2024-12-13T08:03:32.8425960Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение расширенной статистики
+    DateTime=2024-12-13T08:03:32.8426430Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение ограничений
+    DateTime=2024-12-13T08:03:32.8445614Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение триггеров
+    DateTime=2024-12-13T08:03:32.8446051Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение правил перезаписи
+    DateTime=2024-12-13T08:03:32.8465754Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение политик
+    DateTime=2024-12-13T08:03:32.8482775Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение политик защиты на уровне строк
+    DateTime=2024-12-13T08:03:32.8483305Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение публикаций
+    DateTime=2024-12-13T08:03:32.8501676Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение информации о таблицах, включённых в публикации
+    DateTime=2024-12-13T08:03:32.8512390Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение информации о схемах, включённых в публикации
+    DateTime=2024-12-13T08:03:32.8529863Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение подписок
+    DateTime=2024-12-13T08:03:32.8541504Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение больших объектов
+    DateTime=2024-12-13T08:03:32.8584993Z
+FiscalFlowAdmin Information: 0 : pg_dump: чтение информации о зависимостях
+    DateTime=2024-12-13T08:03:32.8595895Z
+FiscalFlowAdmin Information: 0 : pg_dump: сохранение кодировки (UTF8)
+    DateTime=2024-12-13T08:03:32.8807413Z
+FiscalFlowAdmin Information: 0 : pg_dump: сохранение standard_conforming_strings (on)
+    DateTime=2024-12-13T08:03:32.8808344Z
+FiscalFlowAdmin Information: 0 : pg_dump: сохранение search_path = 
+    DateTime=2024-12-13T08:03:32.8808581Z
+FiscalFlowAdmin Information: 0 : pg_dump: сохранение определения базы данных
+    DateTime=2024-12-13T08:03:32.8810719Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.__EFMigrationsHistory"
+    DateTime=2024-12-13T08:03:32.9123417Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.audit_actionlog"
+    DateTime=2024-12-13T08:03:32.9125573Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.auth_group"
+    DateTime=2024-12-13T08:03:32.9147001Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.auth_group_permissions"
+    DateTime=2024-12-13T08:03:32.9149313Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.auth_permission"
+    DateTime=2024-12-13T08:03:32.9153995Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.authentication_devicetoken"
+    DateTime=2024-12-13T08:03:32.9166495Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.authentication_profile"
+    DateTime=2024-12-13T08:03:32.9177016Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.authentication_user"
+    DateTime=2024-12-13T08:03:32.9184960Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.authentication_user_groups"
+    DateTime=2024-12-13T08:03:32.9193072Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.authentication_user_user_permissions"
+    DateTime=2024-12-13T08:03:32.9195875Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.authtoken_token"
+    DateTime=2024-12-13T08:03:32.9198259Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.django_admin_log"
+    DateTime=2024-12-13T08:03:32.9202421Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.django_celery_beat_clockedschedule"
+    DateTime=2024-12-13T08:03:32.9210304Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.django_celery_beat_crontabschedule"
+    DateTime=2024-12-13T08:03:32.9212163Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.django_celery_beat_intervalschedule"
+    DateTime=2024-12-13T08:03:32.9220503Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.django_celery_beat_periodictask"
+    DateTime=2024-12-13T08:03:32.9222638Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.django_celery_beat_periodictasks"
+    DateTime=2024-12-13T08:03:32.9231671Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.django_celery_beat_solarschedule"
+    DateTime=2024-12-13T08:03:32.9238735Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.django_content_type"
+    DateTime=2024-12-13T08:03:32.9240659Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.django_migrations"
+    DateTime=2024-12-13T08:03:32.9248955Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.django_session"
+    DateTime=2024-12-13T08:03:32.9258002Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.finances_app_bill"
+    DateTime=2024-12-13T08:03:32.9264750Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.finances_app_credit"
+    DateTime=2024-12-13T08:03:32.9274233Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.finances_app_currency"
+    DateTime=2024-12-13T08:03:32.9276359Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.finances_app_dailycategoryexpense"
+    DateTime=2024-12-13T08:03:32.9283749Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.finances_app_dailyreport"
+    DateTime=2024-12-13T08:03:32.9285604Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.finances_app_debt"
+    DateTime=2024-12-13T08:03:32.9289216Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.finances_app_monthlyexpense"
+    DateTime=2024-12-13T08:03:32.9291170Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.finances_app_rate"
+    DateTime=2024-12-13T08:03:32.9293004Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.finances_app_transaction"
+    DateTime=2024-12-13T08:03:32.9299430Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.finances_app_transactioncategory"
+    DateTime=2024-12-13T08:03:32.9317137Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.reminders_notification"
+    DateTime=2024-12-13T08:03:32.9327200Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.reminders_notification_profiles"
+    DateTime=2024-12-13T08:03:32.9330634Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.social_auth_association"
+    DateTime=2024-12-13T08:03:32.9334610Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.social_auth_code"
+    DateTime=2024-12-13T08:03:32.9336768Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.social_auth_nonce"
+    DateTime=2024-12-13T08:03:32.9340616Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.social_auth_partial"
+    DateTime=2024-12-13T08:03:32.9342583Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.social_auth_usersocialauth"
+    DateTime=2024-12-13T08:03:32.9346408Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.token_blacklist_blacklistedtoken"
+    DateTime=2024-12-13T08:03:32.9348942Z
+FiscalFlowAdmin Information: 0 : pg_dump: выгрузка содержимого таблицы "public.token_blacklist_outstandingtoken"
+    DateTime=2024-12-13T08:03:32.9358542Z
+FiscalFlowAdmin Information: 0 : Резервное копирование успешно завершено.
+    DateTime=2024-12-13T08:03:35.5910810Z
+FiscalFlowAdmin Information: 0 : Мониторинг базы данных обновлен успешно: Транзакций в минуту: 113,89, Вставлено строк: 0,00, Обновлено строк: 0,00, Удалено строк: 0,00, Кэш-хит: 100,00%, Активных соединений: 2
+    DateTime=2024-12-13T08:03:38.6641799Z
+FiscalFlowAdmin Information: 0 : Мониторинг базы данных обновлен успешно: Транзакций в минуту: 113,92, Вставлено строк: 0,00, Обновлено строк: 0,00, Удалено строк: 0,00, Кэш-хит: 100,00%, Активных соединений: 2
+    DateTime=2024-12-13T08:03:41.2414565Z
+FiscalFlowAdmin Information: 0 : Мониторинг базы данных обновлен успешно: Транзакций в минуту: 35,99, Вставлено строк: 0,00, Обновлено строк: 0,00, Удалено строк: 0,00, Кэш-хит: 0,00%, Активных соединений: 2
+    DateTime=2024-12-13T08:03:48.6680457Z
+FiscalFlowAdmin Information: 0 : Мониторинг базы данных обновлен успешно: Транзакций в минуту: 35,99, Вставлено строк: 0,00, Обновлено строк: 0,00, Удалено строк: 0,00, Кэш-хит: 0,00%, Активных соединений: 2
+    DateTime=2024-12-13T08:03:51.2437852Z
